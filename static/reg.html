@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/logging.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/ac8a510db3.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="loginSpace">
+    <h1>Register an Account</h1>
+    <form action="/register" method="post">
+        <div>Username: <input type="text" name="username" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')"></div>
+        <div>Password: <input type="password" name="password" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')"></div>
+        <div>Given Name: <input type="text" name="firstname" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')"></div>
+        <div>SurName: <input type="text" name="surname" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')"></div>
+        <input type="submit" value="Get the account">
+    </form>
+</div>
+</body>
+</html>

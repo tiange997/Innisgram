@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Homepage</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/ac8a510db3.js" crossorigin="anonymous"></script>
+    <script>
+        let showCounter = 0;
+
+        $(document).ready(function () {
+            $(".commenting").hide();
+
+            $.ajax({
+                url:"/getPost",
+                success: function (result) {
+                    console.log(result);
+
+                    $('.appending').each(function () {
+                        let idChecker = Number($(this).attr("data-id"))+1;
+                        for (let i = 0; i<result.length; i++){
+                            if (result[i]["imgID"] == idChecker){
+                                console.log(result[i]["username"],result[i]["content"]);
+                                let htmlCode = '';
+                                htmlCode += "<br>" + "<span class='comment' style='font-weight: bold'>" + result[i]["username"] + "</span>"
+                                            + "&nbsp;&nbsp;" + "<span class='comment'>" + result[i]["content"]
+                                            + "</span>";
+                                $(this).append(htmlCode);
+                            }
+                        }
+                    });
+                },
+                error: function () {
+                    console.log('error');
+                }
+            });
+        });
+
+        function like(obj) {
+
+            <%if(!login){ %>
+            alert("Please login before commenting");
+            <% } else { %>
+
+            let item = '';
+
+            $(obj).html("<i class=\"fas fa-heart\" style=\"color: red\"></i>");
+            item = $(obj).parent().parent().children("img").attr("name");
+            console.log(item);
+
+            $.ajax("http://localhost:8081/like",
+                    {
+                        contentType: "application/json",
+                        type: 'post',
+                        dataType: 'json',
+                        data: JSON.stringify({"picName": item }),
+                        success: function () {
+                            let currentLikes = $(obj).parent().children(".likeCounter").children(".counter").text();
+                            currentLikes++;
+                            $(obj).parent().children(".likeCounter").children(".counter").text(currentLikes);
+                            console.log("ajax success!");
+                        },
+                        error: function () {
+                            console.log('error');
+                        }
+                    }
+             );
+            <% } %>
+        }
+
+        function comment(obj) {
+            <% if (!login){ %>
+                alert("Please login before commenting");
+            <% } else { %>
+                console.log("Welcome");
+                showCounter++;
+                    if (showCounter%2 != 0){
+                        $(obj).next().show();
+                    } else {
+                        $(obj).next().hide();
+                    }
+            <% } %>
+        }
+
+        function commentPost(obj) {
+            const  text = $(obj).parent().children("input").val();
+            const appending = $(obj).parent().parent().parent();
+            let pictureID = appending.attr("data-id");
+            pictureID++;
+            console.log(text,pictureID);
+            $.ajax("http://localhost:8081/postComment",
+                {
+                    contentType: "application/json",
+                    type: 'post',
+                    dataType: 'json',
+                    data: JSON.stringify({"msg": text, "picID": pictureID}),
+                    success: function (result) {
+                        console.log("ajax success!");
+                        console.log(result);
+                        //appending text after the last comment element
+                        let htmlCode = '';
+                        htmlCode += "<br>" + "<span class='comment' style='font-weight: bold'>" + result["username"] + "</span>"
+                            + "&nbsp;&nbsp;" + "<span class='comment'>" + text
+                            + "</span>";
+                        appending.append(htmlCode);
+                        $(obj).parent().children("input").val('');
+                    },
+                    error: function () {
+                        console.log('error');
+                    }
+                }
+            );
+        }
+    </script>
+</head>
+<body>
+    <% if (!login){ %>
+    <div id="navbar" style="text-align: right;">
+        <a href="/login">Login</a>
+        <a href="/reg">Register</a>
+    </div>
+    <% } else { %>
+        <div id="navbar" style="text-align: right"><a href="/profile">Profile</a></div>
+    <% } %>
+
+    <div id="displayImage" style="background-color: black; opacity: 0.85; width: 100%; height: 100vh; position: fixed; z-index: 2; display: none">
+        <img src="#">
+    </div>
+
+    <h1>Welcome to Innisgram</h1>
+
+    <% for (var i in uploader){ %>
+        <div class="picHolder" style="z-index: 1;">
+            <p style="font-size: 1.5em;">Uploader: <%= uploader[i]%></p>
+            <img src='<%=pictureURL[i]%>' name="<%=picName[i]%>">
+            <div style="text-align: left" data-id="<%=i%>" class="appending">
+                <span style="text-align: right; font-size: 1em;"><%= dateInfo[i]%></span>
+                <br>
+                <span style="text-align: right; font-size: 0.8em;" class="likeCounter"><span class="counter"><%= likes[i]%></span>&nbsp;Like(s)</span>
+                <span id="like1" class="like" onclick="like(this)"><i class="far fa-heart"></i></span>  <i class="far fa-comments commentButton" onclick="comment(this)"></i>
+                <span class="commenting">
+                    <br>
+                    <form method="post">
+                        <input type="text" name="userComment">
+                        <i class="far fa-paper-plane" onclick="commentPost(this)"></i>
+                    </form>
+                </span>
+            </div>
+        </div>
+    <% } %>
+</body>
+</html>

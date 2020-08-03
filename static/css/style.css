@@ -1,0 +1,61 @@
+body{
+    background-color: aliceblue;
+}
+
+#navbar{
+    margin-right: 2%;
+    margin-top: 2%;
+}
+
+h1 {
+    margin: 2%;
+    text-align: center;
+}
+
+img{
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.picHolder{
+    padding: 1%;
+    margin: 2%;
+    margin-left: 30%;
+    width: 40%;
+    border: 3px solid #CCABCB;
+    border-radius: 15px;
+    display: inline-block;
+}
+
+.icon{
+    width: 8%;
+}
+
+span {
+    font-size: 1.5em;
+}
+
+i {
+    cursor: pointer;
+}
+
+.commentButton{
+    font-size: 1.5em;
+}
+
+.comment {
+    font-size: 0.8em
+}
+
+input[type=text], select {
+    width: 90%;
+    height: 10px;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 0.5em;
+}

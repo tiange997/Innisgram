@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Homepage</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    
+<% if (!login){ %>
+    <div id="navbar" style="text-align: right"><a href="/login">Login</a></div>
+    <h1><%= data %></h1>
+<% } else {%>
+    <div id="navbar" style="text-align: right"><a href="/logout">Logout</a></div>
+    <h1>Welcome to the homepage, <%= data %></h1>
+<%}%>
+
+<% if (login){ %>
+    <form ref='uploadForm'
+          id='uploadForm'
+          action='/upload'
+          method='post'
+          encType="multipart/form-data">
+        <input type="file" name="photo" />
+        <input type='submit' value='Upload!' />
+    </form>
+<% } %>
+
+</body>
+</html>

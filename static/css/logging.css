@@ -1,0 +1,13 @@
+body{
+    background-color: aliceblue;
+}
+
+div{
+    margin:auto;
+    text-align:center;
+    padding: 3%;
+}
+
+.loginSpace{
+    padding-top: 20%;
+}
